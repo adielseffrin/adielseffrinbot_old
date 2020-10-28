@@ -8,11 +8,6 @@ require_once './quest.php';
 
 $connection = new \Phergie\Irc\Connection();
 
-
-
-$seuBot = 'dependeBot'; //substituir pelo nick do seu bot
-$seuCanal = '#adielseffrin'; //substituir pelo nome da sua live exemplo #pokemaobr
-
 $connection
     ->setServerHostname('irc.chat.twitch.tv')
     ->setServerPort(6667)
@@ -22,50 +17,49 @@ $connection
 
 $client = new \Phergie\Irc\Client\React\Client();
 
-
-
 $client->on('connect.after.each', function ($connection, $write) {
     global $seuCanal;
-   // global $conn;
+    // global $conn;
     $write->ircJoin($seuCanal);
     $write->ircPrivmsg($seuCanal, 'Cheguei? Depende...');
 });
 
 $client->on('irc.received', function ($message, $write, $connection, $logger) {
-
     global $seuCanal;
     //global $conn;
-    
 
     if ($message['command'] == 'PRIVMSG') {
 
         $comando = null;
-        if(strripos(strtolower($message['params']['text']),"!") === 0)
-            $comando = explode(" ",strtolower($message['params']['text']))[0];
+        if (strripos(strtolower($message['params']['text']), "!") === 0)
+            $comando = explode(" ", strtolower($message['params']['text']))[0];
 
-        if(!is_null($comando))
-            switch($comando){
+        if (!is_null($comando))
+            switch ($comando) {
                 case "!ban":
                     ban($message, $write, $seuCanal);
-                break;
+                    break;
                 case "!pergunta":
                     perguntas($message, $write, $seuCanal);
-                break;
+                    break;
                 case "!social":
                 case "!twitter":
                 case "!github":
                 case "!instagram":
                     social($message, $write, $seuCanal);
-                break;
-				case "!comandos":
+                    break;
+                case "!comandos":
                     comandos($message, $write, $seuCanal);
-                break;
-                //case "!quest":
-               //     quest($message, $write, $seuCanal,$conn);
-                //break;
-                //case "!errou":
-                //    errou($message, $write, $seuCanal);
-                //break;
+                    break;
+                case "!discord":
+                    discord($message, $write, $seuCanal);
+                    break;
+                    //case "!quest":
+                    //     quest($message, $write, $seuCanal,$conn);
+                    //break;
+                    //case "!errou":
+                    //    errou($message, $write, $seuCanal);
+                    //break;
 
             };
 
@@ -75,7 +69,6 @@ $client->on('irc.received', function ($message, $write, $connection, $logger) {
         //}
 
     }
-
 });
 
 $client->run($connection);
