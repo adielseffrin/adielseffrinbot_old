@@ -110,7 +110,6 @@ function social($message, $write, $canal){
       case "!instagram":
         $write->ircPrivmsg($canal, "Instagram: https://instagram.com/adielseffrin"); 
       break;
-
     }
   }
 
@@ -122,4 +121,8 @@ function errou($message, $write, $canal){
   //$current = file_get_contents($file);
   $current = "Testeeee\n";
   file_put_contents($file, $current, FILE_APPEND);
+}
+
+function discord($message, $write, $canal) {
+  $write->ircPrivmsg($canal, "Entre no nosso discord: https://discord.gg/KW6dFuN");
 }
