@@ -1,6 +1,7 @@
 <?php
 
-function ban($message, $write, $canal){
+function ban($message, $write, $canal)
+{
 
   $motivos = array(
     "por não se comportar!",
@@ -22,30 +23,31 @@ function ban($message, $write, $canal){
   );
 
   $mesagemLower = strtolower($message['params']['text']);
-  $stack = explode(" ",$mesagemLower);
+  $stack = explode(" ", $mesagemLower);
 
-  switch(count($stack)){
+  switch (count($stack)) {
     case 1:
-      $username = str_replace("@","",$message['user']);
+      $username = str_replace("@", "", $message['user']);
       $write->ircPrivmsg($canal, "@$username por favor se retire para aprender a usar o !ban");
-    break;
+      break;
     case 2:
-      $username = str_replace("@","",$stack[1]);
-      $write->ircPrivmsg($canal, "@$username foi {$retiradas[rand(0,count($retiradas) -1)]} {$motivos[rand(0,count($motivos) -1)]}");
-    break;
-    default:  
-      $username = str_replace("@","",$stack[1]);
-      $motivo = join(" ", array_slice($stack,2));
+      $username = str_replace("@", "", $stack[1]);
+      $write->ircPrivmsg($canal, "@$username foi {$retiradas[rand(0, count($retiradas) - 1)]} {$motivos[rand(0, count($motivos) - 1)]}");
+      break;
+    default:
+      $username = str_replace("@", "", $stack[1]);
+      $motivo = join(" ", array_slice($stack, 2));
       $write->ircPrivmsg($canal, "@$username foi banido por $motivo");
   }
 }
 
 
-function perguntas($message, $write, $canal){
-  $respostas =array(
+function perguntas($message, $write, $canal)
+{
+  $respostas = array(
     "Depende...",
-     "Talvez...", 
-     "Pode ser que sim, mas pode ser que não",
+    "Talvez...",
+    "Pode ser que sim, mas pode ser que não",
     "Vamos ver, quem sabe...",
     "Temos que marcar pra ver isso...",
     "Vou ver e te aviso",
@@ -61,68 +63,66 @@ function perguntas($message, $write, $canal){
     "Ai.. me dá um tempo"
   );
 
- $ou = array(
+  $ou = array(
     "Sim",
     "Não",
     "Depende",
- );
+  );
 
   $mesagemLower = strtolower($message['params']['text']);
 
-  $stack = explode(" ",$mesagemLower);
+  $stack = explode(" ", $mesagemLower);
 
   $username = $message['user'];
 
-
-  if(count($stack) > 1){
-    if(strpos($mesagemLower, 'ou') > 0)
-      $write->ircPrivmsg($canal, "@$username {$ou[rand(0,count($ou) -1)]}");
-    elseif(strpos($mesagemLower, 'qual') > 0)  
-      $write->ircPrivmsg($canal, "@$username {$qual[rand(0,count($qual) -1)]}");  
-    else
-      $write->ircPrivmsg($canal, "@$username {$respostas[rand(0,count($respostas) -1)]}");  
-  }else
-      $write->ircPrivmsg($canal, "Sério @$username ?! Vai só me chamar e não falar nada?");  
-
+  if (count($stack) > 1) {
+    if (strpos($mesagemLower, 'ou') > 0) {
+      $write->ircPrivmsg($canal, "@$username {$ou[rand(0, count($ou) - 1)]}");
+    } elseif (strpos($mesagemLower, 'qual') > 0) {
+      $write->ircPrivmsg($canal, "@$username {$qual[rand(0, count($qual) - 1)]}");
+    } else {
+      $write->ircPrivmsg($canal, "@$username {$respostas[rand(0, count($respostas) - 1)]}");
+    }
+  } else {
+    $write->ircPrivmsg($canal, "Sério @$username ?! Vai só me chamar e não falar nada?");
+  }
 }
 
-function comandos($message, $write, $canal){
+function comandos($message, $write, $canal)
+{
   $username = $message['user'];
-  $write->ircPrivmsg($canal, "Calma @$username... ainda não sei tudo que tenho :("); 
+  $write->ircPrivmsg($canal, "Calma @$username... ainda não sei tudo que tenho :(");
 }
 
-function social($message, $write, $canal){
+function social($message, $write, $canal)
+{
   $mesagemLower = strtolower($message['params']['text']);
-  $stack = explode(" ",$mesagemLower);
-  if(count($stack) > 1){
-
-  }else{
-    switch($mesagemLower){
+  $stack = explode(" ", $mesagemLower);
+  if (count($stack) <= 1) {
+    switch ($mesagemLower) {
       case "!social":
-        $write->ircPrivmsg($canal, "Ooopa, perai, mas onde? !twitter !github !instagram"); 
-      break;
+        $write->ircPrivmsg($canal, "Ooopa, perai, mas onde? !twitter !github !instagram");
+        break;
       case "!twitter":
-        $write->ircPrivmsg($canal, "Twitter: http://twitter.com/adielseffrin"); 
-      break;
+        $write->ircPrivmsg($canal, "Twitter: http://twitter.com/adielseffrin");
+        break;
       case "!github":
-        $write->ircPrivmsg($canal, "Github: https://github.com/adielseffrin/"); 
-      break;
+        $write->ircPrivmsg($canal, "Github: https://github.com/adielseffrin/");
+        break;
       case "!instagram":
-        $write->ircPrivmsg($canal, "Instagram: https://instagram.com/adielseffrin"); 
-      break;
+        $write->ircPrivmsg($canal, "Instagram: https://instagram.com/adielseffrin");
+        break;
+      case "!discord":
+        $write->ircPrivmsg($canal, "Entre no nosso discord: https://discord.gg/KW6dFuN");
+        break;
     }
   }
-
-
 }
 
-function errou($message, $write, $canal){
+function errou($message, $write, $canal)
+{
   $file = 'errou.txt';
   //$current = file_get_contents($file);
   $current = "Testeeee\n";
   file_put_contents($file, $current, FILE_APPEND);
-}
-
-function discord($message, $write, $canal) {
-  $write->ircPrivmsg($canal, "Entre no nosso discord: https://discord.gg/KW6dFuN");
 }
