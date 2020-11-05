@@ -19,14 +19,14 @@ $client = new \Phergie\Irc\Client\React\Client();
 
 $client->on('connect.after.each', function ($connection, $write) {
     global $seuCanal;
-    // global $conn;
+//    global $conn;
     $write->ircJoin($seuCanal);
     $write->ircPrivmsg($seuCanal, 'Cheguei? Depende...');
 });
 
 $client->on('irc.received', function ($message, $write, $connection, $logger) {
     global $seuCanal;
-    //global $conn;
+//    global $conn;
 
     if ($message['command'] == 'PRIVMSG') {
 
