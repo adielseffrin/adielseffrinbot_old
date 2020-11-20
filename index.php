@@ -3,7 +3,8 @@
 require_once 'config.php';
 require_once 'vendor/autoload.php';
 require_once './comandos.php';
-require_once './quest.php';
+require_once './debugando.php';
+require_once './Twitter.class.php';
 
 $connection = new \Phergie\Irc\Connection();
 
@@ -18,12 +19,22 @@ $client = new \Phergie\Irc\Client\React\Client();
 
 $client->on('connect.after.each', function ($connection, $write) {
     global $seuCanal;
+    global $debugando;
+    global $twitter;
+    global $twitter_keys;
+
     $write->ircJoin($seuCanal);
     $write->ircPrivmsg($seuCanal, 'Cheguei? Depende...');
+
+    $debugando = new Debugando();
+    $twitter = new Twitter($twitter_keys);
+
 });
 
 $client->on('irc.received', function ($message, $write, $connection, $logger) {
     global $seuCanal;
+    global $debugando;
+    global $twitter;
 
     if ($message['command'] == 'PRIVMSG') {
 
@@ -50,6 +61,15 @@ $client->on('irc.received', function ($message, $write, $connection, $logger) {
                 case "!comandos":
                     comandos($message, $write, $seuCanal);
                     break;
+                case "!debug":
+                    $debugando->handleCommand($message, $write, $seuCanal);
+                    break;
+				case "!rt":
+                    $write->ircPrivmsg($seuCanal, "O QUEEE? Ainda não deu o RT? Ajuda lá que não custa nada pois esses bugs não vão se espalhar sozinhos! https://twitter.com/adielseffrin/status/".$twitter->getUltimoTweet());
+                    break;
+				
+
+
             };
         }
     }
