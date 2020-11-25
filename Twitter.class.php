@@ -18,6 +18,8 @@ class Twitter{
     $this->bearer_key = $keys['TWITTER_BEARER_TOKEN'];
 
     $this->ultimoTweet = null;
+
+  
   }
 
   public function getUser($user){

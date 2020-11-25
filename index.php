@@ -3,8 +3,8 @@
 require_once 'config.php';
 require_once 'vendor/autoload.php';
 require_once './comandos.php';
-require_once './debugando.php';
 require_once './Twitter.class.php';
+require_once './Debugando.class.php';
 
 $connection = new \Phergie\Irc\Connection();
 
@@ -28,6 +28,7 @@ $client->on('connect.after.each', function ($connection, $write) {
 
     $debugando = new Debugando();
     $twitter = new Twitter($twitter_keys);
+    var_dump("oooooooi");
 
 });
 
@@ -61,15 +62,14 @@ $client->on('irc.received', function ($message, $write, $connection, $logger) {
                 case "!comandos":
                     comandos($message, $write, $seuCanal);
                     break;
-                case "!debug":
+				case "!rt":
+                   // $write->ircPrivmsg($seuCanal, "O QUEEE? Ainda não deu o RT? Ajuda lá que não custa nada pois esses bugs não vão se espalhar sozinhos! https://twitter.com/adielseffrin/status/1331560139141373952");
+                   $write->ircPrivmsg($seuCanal, "O QUEEE? Ainda não deu o RT? Ajuda lá que não custa nada pois esses bugs não vão se espalhar sozinhos! https://twitter.com/adielseffrin/status/".$twitter->getUltimoTweet());
+                    break;
+                case "!debugando":
                     $debugando->handleCommand($message, $write, $seuCanal);
                     break;
-				case "!rt":
-                    $write->ircPrivmsg($seuCanal, "O QUEEE? Ainda não deu o RT? Ajuda lá que não custa nada pois esses bugs não vão se espalhar sozinhos! https://twitter.com/adielseffrin/status/".$twitter->getUltimoTweet());
-                    break;
 				
-
-
             };
         }
     }
